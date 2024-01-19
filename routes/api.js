@@ -21,6 +21,18 @@ router.put('/patients/:id', PatientController.update);
 router.delete('/patients/:id', PatientController.destroy);
 // menambahkan route untuk get detail resource
 router.get('/patients/:id', PatientController.show);
+// Rute untuk pencarian by nama
+router.get('/search/:name', PatientController.search);
+
+// Route untuk mendapatkan data patients dengan status positive
+router.get('/patients/status/positive', PatientController.getPositive);
+
+// Route untuk mendapatkan data patients dengan status recovered
+router.get('/patients/status/recovered', PatientController.getRecovered);
+
+// Route untuk mendapatkan data patients dengan status dead
+router.get('/patients/status/dead', PatientController.getDead);
+
 
 // export router
 module.exports = router;

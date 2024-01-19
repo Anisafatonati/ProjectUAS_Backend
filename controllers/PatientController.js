@@ -68,24 +68,12 @@ class PatientController {
   
       if (existingPatient) {
         await Patient.delete(id);
-        const data = {
-          message: `Menghapus data patients`,
-        };
-  
-        res.status(200).json(data);
+        res.status(200).json({ message: 'Menghapus data patients' });
       } else {
-        const data = {
-          message: `Patient not found`,
-        };
-  
-        res.status(404).json(data);
+        res.status(404).json({ message: 'Patient not found' });
       }
     } catch (error) {
-      const data = {
-        message: `Error deleting patient data`,
-        error: error.message,
-      };
-      res.status(500).json(data);
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -108,6 +96,71 @@ class PatientController {
       res.status(404).json(data);
     }
   }
+  async search(req, res) {
+    const { name } = req.params;
+
+    try {
+      const searchResults = await Patient.search(name);
+      res.status(200).json({
+        message: `Search results for '${name}'`,
+        data: searchResults,
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+  async getPositive(req, res) {
+    try {
+      const positivePatients = await Patient.findByStatus('positive');
+      const data = {
+        message: 'Menampilkan data patients dengan status positive',
+        data: positivePatients,
+      };
+      res.status(200).json(data);
+    } catch (error) {
+      const data = {
+        message: 'Error fetching positive patients data',
+        error: error.message,
+      };
+      res.status(500).json(data);
+    }
+  }
+
+  async getRecovered(req, res) {
+    try {
+      const recoveredPatients = await Patient.findByStatus('recovered');
+      const data = {
+        message: 'Menampilkan data patients dengan status recovered',
+        data: recoveredPatients,
+      };
+      res.status(200).json(data);
+    } catch (error) {
+      const data = {
+        message: 'Error fetching recovered patients data',
+        error: error.message,
+      };
+      res.status(500).json(data);
+    }
+  }
+
+  async getDead(req, res) {
+    try {
+      const deadPatients = await Patient.findByStatus('dead');
+      const data = {
+        message: 'Menampilkan data patients dengan status dead',
+        data: deadPatients,
+      };
+      res.status(200).json(data);
+    } catch (error) {
+      const data = {
+        message: 'Error fetching dead patients data',
+        error: error.message,
+      };
+      res.status(500).json(data);
+    }
+  }
+
 }
 
 // Membuat object PatientController

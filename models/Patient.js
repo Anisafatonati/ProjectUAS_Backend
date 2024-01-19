@@ -64,17 +64,19 @@ class Patient {
   
 
   // Delete patient by ID
-  static delete(id) {
-    return new Promise((resolve, reject) => {
-      const sql = 'DELETE FROM patients WHERE id = ?';
-      db.query(sql, id, (err, results) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(results);
-      });
+static delete(id) {
+  return new Promise((resolve, reject) => {
+    const sql = 'DELETE FROM patients WHERE id = ?';
+    db.query(sql, id, (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
     });
-  }
+  });
+}
+
+  
   
 
   // Find patient by ID
@@ -96,6 +98,17 @@ class Patient {
     return new Promise((resolve, reject) => {
       const query = `SELECT * FROM patients WHERE name LIKE ?`;
       db.query(query, [`%${name}%`], (err, results) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
+  }
+  static findByStatus(status) {
+    return new Promise((resolve, reject) => {
+      const query = "SELECT * FROM patients WHERE status = ?";
+      db.query(query, [status], (err, results) => {
         if (err) {
           return reject(err);
         }
